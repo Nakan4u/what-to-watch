@@ -1,0 +1,49 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "appName": "What to watch?"
+  },
+  "nav": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "myWatchlist": "My watchlist",
+    "browse": "Browse"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "register": "Register",
+    "signInWithGoogle": "Sign in with Google"
+  },
+  "browse": {
+    "search": "Search",
+    "filters": "Filters",
+    "movie": "Movie",
+    "tv": "TV",
+    "year": "Year",
+    "genre": "Genre",
+    "all": "All",
+    "noResults": "No results. Try changing filters or search query."
+  },
+  "watchlist": {
+    "addToWatchlist": "Add to watchlist",
+    "markWatched": "Mark watched",
+    "comment": "Comment",
+    "remove": "Remove",
+    "editComment": "Edit comment"
+  },
+  "whereToWatch": {
+    "title": "Where to watch",
+    "seeWhereToWatch": "See where to watch",
+    "stream": "Stream",
+    "rent": "Rent",
+    "buy": "Buy"
+  },
+  "home": {
+    "description": "This is a simple app that allows you to search for movies and TV shows.",
+    "popularMovies": "Popular movies",
+    "popularTvShows": "Popular TV shows"
+  }
+}

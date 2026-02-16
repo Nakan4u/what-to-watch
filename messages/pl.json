@@ -1,0 +1,49 @@
+{
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Coś poszło nie tak",
+    "appName": "Co obejrzeć?"
+  },
+  "nav": {
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj się",
+    "myWatchlist": "Moja lista",
+    "browse": "Przeglądaj"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Hasło",
+    "signIn": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "signInWithGoogle": "Zaloguj się przez Google"
+  },
+  "browse": {
+    "search": "Szukaj",
+    "filters": "Filtry",
+    "movie": "Film",
+    "tv": "Serial",
+    "year": "Rok",
+    "genre": "Gatunek",
+    "all": "Wszystkie",
+    "noResults": "Brak wyników. Zmień filtry lub zapytanie."
+  },
+  "watchlist": {
+    "addToWatchlist": "Dodaj do listy",
+    "markWatched": "Obejrzane",
+    "comment": "Komentarz",
+    "remove": "Usuń",
+    "editComment": "Edytuj komentarz"
+  },
+  "whereToWatch": {
+    "title": "Gdzie obejrzeć",
+    "seeWhereToWatch": "Zobacz gdzie obejrzeć",
+    "stream": "Streaming",
+    "rent": "Wypożycz",
+    "buy": "Kup"
+  },
+  "home": {
+    "description": "To prosta aplikacja do wyszukiwania filmów i seriali.",
+    "popularMovies": "Popularne filmy",
+    "popularTvShows": "Popularne seriale"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "common": {
+    "loading": "Завантаження...",
+    "error": "Щось пішло не так",
+    "appName": "Що подивитись?"
+  },
+  "nav": {
+    "signIn": "Увійти",
+    "signOut": "Вийти",
+    "myWatchlist": "Мій список",
+    "browse": "Переглянути"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Пароль",
+    "signIn": "Увійти",
+    "register": "Реєстрація",
+    "signInWithGoogle": "Увійти через Google"
+  },
+  "browse": {
+    "search": "Пошук",
+    "filters": "Фільтри",
+    "movie": "Фільм",
+    "tv": "Серіал",
+    "year": "Рік",
+    "genre": "Жанр",
+    "all": "Усі",
+    "noResults": "Нічого не знайдено. Змініть фільтри або запит."
+  },
+  "watchlist": {
+    "addToWatchlist": "Додати до списку",
+    "markWatched": "Переглянуто",
+    "comment": "Коментар",
+    "remove": "Видалити",
+    "editComment": "Редагувати коментар"
+  },
+  "whereToWatch": {
+    "title": "Де дивитись",
+    "seeWhereToWatch": "Де подивитись",
+    "stream": "Стрімінг",
+    "rent": "Оренда",
+    "buy": "Купити"
+  },
+  "home": {
+    "description": "Це простий додаток для пошуку фільмів та серіалів.",
+    "popularMovies": "Популярні фільми",
+    "popularTvShows": "Популярні серіали"
+  }
+}
