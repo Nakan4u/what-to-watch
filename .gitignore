@@ -43,3 +43,6 @@ next-env.d.ts
 # other files
 todo.txt
 prisma/dev.db
+
+# user uploads (avatars)
+/public/uploads

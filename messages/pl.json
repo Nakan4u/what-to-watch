@@ -9,7 +9,8 @@
     "signOut": "Wyloguj się",
     "signOutSuccess": "Wylogowano pomyślnie",
     "myWatchlist": "Moja lista",
-    "browse": "Przeglądaj"
+    "browse": "Przeglądaj",
+    "profile": "Profil"
   },
   "auth": {
     "email": "E-mail",
@@ -19,6 +20,32 @@
     "signInWithGoogle": "Zaloguj się przez Google",
     "signInSuccess": "Zalogowano pomyślnie",
     "registerSuccess": "Konto utworzone. Jesteś zalogowany."
+  },
+  "profile": {
+    "title": "Profil",
+    "accountInfo": "Dane konta",
+    "uploadAvatar": "Prześlij avatar",
+    "removeAvatar": "Usuń avatar",
+    "avatarUpdated": "Avatar zaktualizowany",
+    "avatarRemoved": "Avatar usunięty",
+    "email": "E-mail",
+    "emailReadOnly": "E-mailu nie można zmienić",
+    "displayName": "Nazwa wyświetlana",
+    "saveName": "Zapisz nazwę",
+    "changePassword": "Zmień hasło",
+    "currentPassword": "Aktualne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "passwordMinLength": "Co najmniej 6 znaków",
+    "updatePassword": "Zaktualizuj hasło",
+    "nameUpdated": "Nazwa zaktualizowana",
+    "passwordUpdated": "Hasło zaktualizowane",
+    "passwordsDoNotMatch": "Hasła nie są takie same",
+    "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+    "error": "Coś poszło nie tak",
+    "saving": "Zapisywanie...",
+    "myWatchlist": "Moja lista",
+    "watchlistEmpty": "Twoja lista jest pusta. Przeglądaj filmy i seriale, aby coś dodać."
   },
   "browse": {
     "search": "Szukaj",
@@ -31,6 +58,8 @@
     "noResults": "Brak wyników. Zmień filtry lub zapytanie."
   },
   "watchlist": {
+    "title": "Moja lista",
+    "empty": "Twoja lista jest pusta. Przeglądaj filmy i seriale, aby coś dodać.",
     "addToWatchlist": "Dodaj do listy",
     "signInToAddToWatchlist": "Zaloguj się, aby dodać do listy",
     "removeFromWatchlist": "Usuń z listy",

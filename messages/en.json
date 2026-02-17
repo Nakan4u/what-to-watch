@@ -9,7 +9,8 @@
     "signOut": "Sign out",
     "signOutSuccess": "Signed out successfully",
     "myWatchlist": "My watchlist",
-    "browse": "Browse"
+    "browse": "Browse",
+    "profile": "Profile"
   },
   "auth": {
     "email": "Email",
@@ -19,6 +20,32 @@
     "signInWithGoogle": "Sign in with Google",
     "signInSuccess": "Signed in successfully",
     "registerSuccess": "Account created. You're signed in."
+  },
+  "profile": {
+    "title": "Profile",
+    "accountInfo": "Account info",
+    "uploadAvatar": "Upload avatar",
+    "removeAvatar": "Remove avatar",
+    "avatarUpdated": "Avatar updated",
+    "avatarRemoved": "Avatar removed",
+    "email": "Email",
+    "emailReadOnly": "Email cannot be changed",
+    "displayName": "Display name",
+    "saveName": "Save name",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "passwordMinLength": "At least 6 characters",
+    "updatePassword": "Update password",
+    "nameUpdated": "Name updated",
+    "passwordUpdated": "Password updated",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "error": "Something went wrong",
+    "saving": "Saving...",
+    "myWatchlist": "My watchlist",
+    "watchlistEmpty": "Your watchlist is empty. Browse movies and TV shows to add some."
   },
   "browse": {
     "search": "Search",
@@ -31,6 +58,8 @@
     "noResults": "No results. Try changing filters or search query."
   },
   "watchlist": {
+    "title": "My watchlist",
+    "empty": "Your watchlist is empty. Browse movies and TV shows to add some.",
     "addToWatchlist": "Add to watchlist",
     "signInToAddToWatchlist": "Sign in to add to watchlist",
     "removeFromWatchlist": "Remove from watchlist",

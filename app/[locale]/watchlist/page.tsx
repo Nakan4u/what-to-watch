@@ -1,7 +1,17 @@
 import { setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Container, Typography, Grid, Card, CardContent, CardMedia, CardActions, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Box,
+} from "@mui/material";
 import { routing } from "@/i18n/routing";
 import { getWatchlist } from "@/app/actions/watchlist";
 import { posterUrl } from "@/lib/tmdb";
@@ -22,22 +32,30 @@ export default async function WatchlistPage({ params }: Props) {
     redirect(`/${locale}/login`);
   }
   const items = await getWatchlist();
+  const t = await getTranslations("watchlist");
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        My watchlist
+      <Typography variant="h4" component="h1" gutterBottom>
+        {t("title")}
       </Typography>
       {items.length === 0 ? (
         <Typography color="text.secondary">
-          Your watchlist is empty. Browse movies and TV shows to add some.
+          {t("empty")}
         </Typography>
       ) : (
         <Grid container spacing={2}>
           {items.map((item) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
               <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                <Link href={item.type === "movie" ? `/movie/${item.tmdbId}` : `/tv/${item.tmdbId}`} style={{ textDecoration: "none" }}>
+                <Link
+                  href={
+                    item.type === "movie"
+                      ? `/movie/${item.tmdbId}`
+                      : `/tv/${item.tmdbId}`
+                  }
+                  style={{ textDecoration: "none" }}
+                >
                   <CardMedia
                     component="img"
                     height="200"

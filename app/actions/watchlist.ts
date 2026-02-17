@@ -31,6 +31,7 @@ export async function addToWatchlist(
     update: {},
   });
   revalidatePath("/[locale]/watchlist");
+  revalidatePath("/[locale]/profile");
   revalidatePath("/[locale]/browse");
   if (pathToRevalidate) revalidatePath(pathToRevalidate);
   return { ok: true };
@@ -46,6 +47,7 @@ export async function removeFromWatchlist(
     where: { id: itemId, userId: session.user.id },
   });
   revalidatePath("/[locale]/watchlist");
+  revalidatePath("/[locale]/profile");
   revalidatePath("/[locale]/browse");
   if (pathToRevalidate) revalidatePath(pathToRevalidate);
   return { ok: true };
@@ -67,6 +69,7 @@ export async function toggleWatched(
     },
   });
   revalidatePath("/[locale]/watchlist");
+  revalidatePath("/[locale]/profile");
   return { ok: true };
 }
 

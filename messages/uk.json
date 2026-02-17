@@ -9,7 +9,8 @@
     "signOut": "Вийти",
     "signOutSuccess": "Ви успішно вийшли",
     "myWatchlist": "Мій список",
-    "browse": "Переглянути"
+    "browse": "Переглянути",
+    "profile": "Профіль"
   },
   "auth": {
     "email": "Email",
@@ -19,6 +20,32 @@
     "signInWithGoogle": "Увійти через Google",
     "signInSuccess": "Успішно ввійшли",
     "registerSuccess": "Обліковий запис створено. Ви увійшли."
+  },
+  "profile": {
+    "title": "Профіль",
+    "accountInfo": "Дані облікового запису",
+    "uploadAvatar": "Завантажити аватар",
+    "removeAvatar": "Видалити аватар",
+    "avatarUpdated": "Аватар оновлено",
+    "avatarRemoved": "Аватар видалено",
+    "email": "Email",
+    "emailReadOnly": "Email не можна змінити",
+    "displayName": "Відображуване ім'я",
+    "saveName": "Зберегти ім'я",
+    "changePassword": "Змінити пароль",
+    "currentPassword": "Поточний пароль",
+    "newPassword": "Новий пароль",
+    "confirmPassword": "Підтвердіть новий пароль",
+    "passwordMinLength": "Мінімум 6 символів",
+    "updatePassword": "Оновити пароль",
+    "nameUpdated": "Ім'я оновлено",
+    "passwordUpdated": "Пароль оновлено",
+    "passwordsDoNotMatch": "Паролі не збігаються",
+    "passwordTooShort": "Пароль має містити щонайменше 6 символів",
+    "error": "Щось пішло не так",
+    "saving": "Збереження...",
+    "myWatchlist": "Мій список",
+    "watchlistEmpty": "Ваш список порожній. Перегляньте фільми та серіали, щоб щось додати."
   },
   "browse": {
     "search": "Пошук",
@@ -31,6 +58,8 @@
     "noResults": "Нічого не знайдено. Змініть фільтри або запит."
   },
   "watchlist": {
+    "title": "Мій список",
+    "empty": "Ваш список порожній. Перегляньте фільми та серіали, щоб щось додати.",
     "addToWatchlist": "Додати до списку",
     "signInToAddToWatchlist": "Увійдіть, щоб додати до списку",
     "removeFromWatchlist": "Видалити зі списку",
