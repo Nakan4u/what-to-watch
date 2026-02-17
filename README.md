@@ -2,6 +2,8 @@
 
 A web app for discovering movies and TV shows, managing a personal watchlist, and finding where to stream content. Built with Next.js, Material UI, and the TMDB API.
 
+**Live app website:** [https://what-to-watch-sable-gamma.vercel.app/](https://what-to-watch-sable-gamma.vercel.app/)
+
 ## Features
 
 - **Browse & search** – Discover movies and TV shows from [The Movie Database (TMDB)](https://www.themoviedb.org). Filter by type (movie/TV), genre, and year. Search by title.
@@ -30,7 +32,6 @@ A web app for discovering movies and TV shows, managing a personal watchlist, an
 2. **Environment variables**
 
    Copy `.env.example` to `.env` and set:
-
    - `TMDB_API_KEY` – [Get a free API key](https://www.themoviedb.org/settings/api)
    - `DATABASE_URL` – SQLite default: `file:./dev.db`
    - For auth: `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, and optionally `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` for Google sign-in
