@@ -41,5 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # other files
-dev.db
 todo.txt
+prisma/dev.db
