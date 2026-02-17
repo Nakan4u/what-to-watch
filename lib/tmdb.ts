@@ -14,6 +14,7 @@ export interface TmdbTitle {
   release_date: string;
   overview: string;
   vote_average?: number;
+  genre_ids?: number[];
 }
 
 interface TmdbMovieResult {
@@ -23,6 +24,7 @@ interface TmdbMovieResult {
   release_date: string;
   overview: string;
   vote_average: number;
+  genre_ids?: number[];
 }
 
 interface TmdbTvResult {
@@ -32,6 +34,7 @@ interface TmdbTvResult {
   first_air_date: string;
   overview: string;
   vote_average: number;
+  genre_ids?: number[];
 }
 
 interface TmdbMultiResult {
@@ -44,6 +47,7 @@ interface TmdbMultiResult {
   first_air_date?: string;
   overview: string;
   vote_average?: number;
+  genre_ids?: number[];
 }
 
 function toTitle(
@@ -59,6 +63,7 @@ function toTitle(
       : "first_air_date" in item && item.first_air_date
         ? item.first_air_date
         : "";
+  const genreIds = "genre_ids" in item && Array.isArray(item.genre_ids) ? item.genre_ids : undefined;
   return {
     id: item.id,
     title,
@@ -67,6 +72,7 @@ function toTitle(
     release_date: date,
     overview: item.overview ?? "",
     vote_average: item.vote_average,
+    genre_ids: genreIds,
   };
 }
 
@@ -172,6 +178,20 @@ export async function getPopularMovies(limit = 10): Promise<TmdbTitle[]> {
   if (!key) return [];
   const res = await fetch(
     `${TMDB_BASE}/movie/popular?api_key=${key}&language=en-US&page=1`,
+    fetchOptions
+  );
+  if (!res.ok) return [];
+  const data = await res.json();
+  const list = (data.results ?? []) as TmdbMovieResult[];
+  return list.slice(0, limit).map((m) => toTitle(m, "movie"));
+}
+
+/** Movies currently in theaters (now playing) */
+export async function getNowPlayingMovies(limit = 10): Promise<TmdbTitle[]> {
+  const key = getApiKey();
+  if (!key) return [];
+  const res = await fetch(
+    `${TMDB_BASE}/movie/now_playing?api_key=${key}&language=en-US&page=1`,
     fetchOptions
   );
   if (!res.ok) return [];

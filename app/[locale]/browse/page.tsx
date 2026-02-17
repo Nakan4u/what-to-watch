@@ -67,6 +67,7 @@ export default async function BrowsePage({ params, searchParams }: Props) {
       allGenres.push(g);
     }
   });
+  const genreIdToName = new Map(allGenres.map((g) => [g.id, g.name]));
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -97,6 +98,11 @@ export default async function BrowsePage({ params, searchParams }: Props) {
                 title={title}
                 watchlistItemId={
                   watchlistIdByTmdb.get(`${title.id}-${title.type}`) ?? null
+                }
+                genreNames={
+                  title.genre_ids
+                    ?.map((id) => genreIdToName.get(id))
+                    .filter((n): n is string => n != null)
                 }
               />
             </Grid>

@@ -51,7 +51,7 @@
     "search": "Search",
     "filters": "Filters",
     "movie": "Movie",
-    "tv": "TV",
+    "tv": "TV show",
     "year": "Year",
     "genre": "Genre",
     "all": "All",
@@ -79,6 +79,7 @@
   },
   "home": {
     "description": "This is a simple app that allows you to search for movies and TV shows.",
+    "inTheaters": "In Theaters",
     "popularMovies": "Popular movies",
     "popularTvShows": "Popular TV shows"
   }

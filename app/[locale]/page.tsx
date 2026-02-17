@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Box, Container, Typography, Grid } from "@mui/material";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { getPopularMovies, getPopularTvShows } from "@/lib/tmdb";
+import { getPopularMovies, getPopularTvShows, getNowPlayingMovies, getMovieGenres, getTvGenres } from "@/lib/tmdb";
 import TitleCard from "@/components/TitleCard";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -20,10 +20,15 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations("common");
   const tHome = await getTranslations("home");
 
-  const [popularMovies, popularTvShows] = await Promise.all([
+  const [nowPlaying, popularMovies, popularTvShows, movieGenres, tvGenres] = await Promise.all([
+    getNowPlayingMovies(10),
     getPopularMovies(10),
     getPopularTvShows(10),
+    getMovieGenres(),
+    getTvGenres(),
   ]);
+  const movieGenreMap = new Map(movieGenres.map((g) => [g.id, g.name]));
+  const tvGenreMap = new Map(tvGenres.map((g) => [g.id, g.name]));
 
   return (
     <Container maxWidth="lg">
@@ -40,6 +45,32 @@ export default async function HomePage({ params }: Props) {
       </Box>
 
       <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
+        {tHome("inTheaters")}
+      </Typography>
+      <Grid container spacing={2} sx={{ mb: 4 }}>
+        {nowPlaying.length === 0 ? (
+          <Grid size={12}>
+            <Typography color="text.secondary" sx={{ py: 2 }}>
+              No movies in theaters right now.
+            </Typography>
+          </Grid>
+        ) : (
+          nowPlaying.map((title) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`now-${title.id}`}>
+              <TitleCard
+                title={title}
+                genreNames={
+                  title.genre_ids
+                    ?.map((id) => movieGenreMap.get(id))
+                    .filter((n): n is string => n != null)
+                }
+              />
+            </Grid>
+          ))
+        )}
+      </Grid>
+
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
         {tHome("popularMovies")}
       </Typography>
       <Grid container spacing={2} sx={{ mb: 4 }}>
@@ -53,7 +84,14 @@ export default async function HomePage({ params }: Props) {
         ) : (
           popularMovies.map((title) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`movie-${title.id}`}>
-              <TitleCard title={title} />
+              <TitleCard
+                title={title}
+                genreNames={
+                  title.genre_ids
+                    ?.map((id) => movieGenreMap.get(id))
+                    .filter((n): n is string => n != null)
+                }
+              />
             </Grid>
           ))
         )}
@@ -72,7 +110,14 @@ export default async function HomePage({ params }: Props) {
         ) : (
           popularTvShows.map((title) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`tv-${title.id}`}>
-              <TitleCard title={title} />
+              <TitleCard
+                title={title}
+                genreNames={
+                  title.genre_ids
+                    ?.map((id) => tvGenreMap.get(id))
+                    .filter((n): n is string => n != null)
+                }
+              />
             </Grid>
           ))
         )}

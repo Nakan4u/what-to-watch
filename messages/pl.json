@@ -79,6 +79,7 @@
   },
   "home": {
     "description": "To prosta aplikacja do wyszukiwania filmów i seriali.",
+    "inTheaters": "W kinach",
     "popularMovies": "Popularne filmy",
     "popularTvShows": "Popularne seriale"
   }

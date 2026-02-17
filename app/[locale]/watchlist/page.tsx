@@ -33,6 +33,7 @@ export default async function WatchlistPage({ params }: Props) {
   }
   const items = await getWatchlist();
   const t = await getTranslations("watchlist");
+  const tBrowse = await getTranslations("browse");
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -45,7 +46,7 @@ export default async function WatchlistPage({ params }: Props) {
         </Typography>
       ) : (
         <Grid container spacing={2}>
-          {items.map((item) => (
+          {items.map((item: Awaited<ReturnType<typeof getWatchlist>>[number]) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
               <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
                 <Link
@@ -65,7 +66,7 @@ export default async function WatchlistPage({ params }: Props) {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      {item.type === "movie" ? "Movie" : "TV"}
+                      {item.type === "movie" ? tBrowse("movie") : tBrowse("tv")}
                     </Typography>
                     <Typography variant="h6" noWrap>
                       {item.title ?? `#${item.tmdbId}`}
