@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postinstall": "prisma generate && prisma migrate deploy",
+    "postinstall": "prisma generate && (node -e \"if (!process.env.VERCEL) require('child_process').execSync('prisma migrate deploy', {stdio:'inherit'})\" || true)",
     "prisma:db": "npx prisma studio",
     "start": "next start",
     "lint": "eslint"
@@ -15,9 +15,11 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@libsql/client": "^0.17.0",
     "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.8",
     "@mui/material-nextjs": "^7.3.8",
+    "@prisma/adapter-libsql": "^7.4.0",
     "@prisma/client": "^6.19.2",
     "bcryptjs": "^3.0.3",
     "next": "16.1.6",
