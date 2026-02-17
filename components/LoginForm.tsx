@@ -13,6 +13,7 @@ import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { register } from "@/app/actions/auth";
+import { useNotification } from "@/components/NotificationContext";
 
 interface LoginFormProps {
   locale: string;
@@ -21,6 +22,7 @@ interface LoginFormProps {
 export default function LoginForm({ locale }: LoginFormProps) {
   const t = useTranslations("auth");
   const router = useRouter();
+  const { showNotification } = useNotification();
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,10 @@ export default function LoginForm({ locale }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const callbackUrl = `/${locale}/browse`;
+  // Full path with locale for next-auth redirect (e.g. Google OAuth); ?signedIn=1 triggers success toast on browse
+  const callbackUrl = `/${locale}/browse?signedIn=1`;
+  // Path without locale for i18n router (it adds the locale automatically)
+  const browsePath = "/browse";
 
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +59,13 @@ export default function LoginForm({ locale }: LoginFormProps) {
         setLoading(false);
         return;
       }
-      if (result?.ok) router.push(callbackUrl);
+      if (result?.ok) {
+        showNotification(
+          isRegister ? t("registerSuccess") : t("signInSuccess"),
+          "success"
+        );
+        router.push(browsePath);
+      }
     } catch {
       setError("Something went wrong");
     }

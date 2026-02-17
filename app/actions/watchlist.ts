@@ -8,7 +8,8 @@ export async function addToWatchlist(
   tmdbId: number,
   type: "movie" | "tv",
   title?: string,
-  posterPath?: string | null
+  posterPath?: string | null,
+  pathToRevalidate?: string
 ) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
@@ -31,16 +32,22 @@ export async function addToWatchlist(
   });
   revalidatePath("/[locale]/watchlist");
   revalidatePath("/[locale]/browse");
+  if (pathToRevalidate) revalidatePath(pathToRevalidate);
   return { ok: true };
 }
 
-export async function removeFromWatchlist(itemId: string) {
+export async function removeFromWatchlist(
+  itemId: string,
+  pathToRevalidate?: string
+) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
   await prisma.watchlistItem.deleteMany({
     where: { id: itemId, userId: session.user.id },
   });
   revalidatePath("/[locale]/watchlist");
+  revalidatePath("/[locale]/browse");
+  if (pathToRevalidate) revalidatePath(pathToRevalidate);
   return { ok: true };
 }
 
@@ -71,4 +78,23 @@ export async function getWatchlist() {
     orderBy: { createdAt: "desc" },
   });
   return items;
+}
+
+export async function getWatchlistItemId(
+  tmdbId: number,
+  type: "movie" | "tv"
+): Promise<string | null> {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+  const item = await prisma.watchlistItem.findUnique({
+    where: {
+      userId_tmdbId_type: {
+        userId: session.user.id,
+        tmdbId,
+        type,
+      },
+    },
+    select: { id: true },
+  });
+  return item?.id ?? null;
 }

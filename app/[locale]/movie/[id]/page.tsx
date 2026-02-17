@@ -17,6 +17,7 @@ import {
   posterUrl,
   getTmdbWatchPageUrl,
 } from "@/lib/tmdb";
+import { getWatchlistItemId } from "@/app/actions/watchlist";
 import AddToWatchlistButton from "@/components/AddToWatchlistButton";
 
 type Props = {
@@ -36,9 +37,10 @@ export default async function MovieDetailPage({ params }: Props) {
   const movieId = parseInt(id, 10);
   if (Number.isNaN(movieId)) notFound();
 
-  const [movie, providers] = await Promise.all([
+  const [movie, providers, watchlistItemId] = await Promise.all([
     getMovieDetail(movieId),
     getMovieWatchProviders(movieId),
+    getWatchlistItemId(movieId, "movie"),
   ]);
 
   if (!movie) notFound();
@@ -117,6 +119,7 @@ export default async function MovieDetailPage({ params }: Props) {
                 overview: movie.overview,
                 vote_average: movie.vote_average,
               }}
+              watchlistItemId={watchlistItemId}
             />
           </Box>
         </CardContent>

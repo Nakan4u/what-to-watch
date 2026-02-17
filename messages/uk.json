@@ -7,6 +7,7 @@
   "nav": {
     "signIn": "Увійти",
     "signOut": "Вийти",
+    "signOutSuccess": "Ви успішно вийшли",
     "myWatchlist": "Мій список",
     "browse": "Переглянути"
   },
@@ -15,7 +16,9 @@
     "password": "Пароль",
     "signIn": "Увійти",
     "register": "Реєстрація",
-    "signInWithGoogle": "Увійти через Google"
+    "signInWithGoogle": "Увійти через Google",
+    "signInSuccess": "Успішно ввійшли",
+    "registerSuccess": "Обліковий запис створено. Ви увійшли."
   },
   "browse": {
     "search": "Пошук",
@@ -29,6 +32,10 @@
   },
   "watchlist": {
     "addToWatchlist": "Додати до списку",
+    "signInToAddToWatchlist": "Увійдіть, щоб додати до списку",
+    "removeFromWatchlist": "Видалити зі списку",
+    "addedToWatchlist": "Додано до списку",
+    "removedFromWatchlist": "Видалено зі списку",
     "markWatched": "Переглянуто",
     "comment": "Коментар",
     "remove": "Видалити",

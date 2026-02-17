@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import { removeFromWatchlist, toggleWatched } from "@/app/actions/watchlist";
+import { useNotification } from "@/components/NotificationContext";
 
 interface WatchlistActionsProps {
   itemId: string;
@@ -17,6 +25,8 @@ export default function WatchlistActions({
   comment,
 }: WatchlistActionsProps) {
   const t = useTranslations("watchlist");
+  const tCommon = useTranslations("common");
+  const { showNotification } = useNotification();
   const [open, setOpen] = useState(false);
   const [commentText, setCommentText] = useState(comment ?? "");
 
@@ -26,7 +36,12 @@ export default function WatchlistActions({
   };
 
   const handleRemove = async () => {
-    await removeFromWatchlist(itemId);
+    const result = await removeFromWatchlist(itemId);
+    if (result?.error) {
+      showNotification(tCommon("error"), "error");
+    } else {
+      showNotification(t("removedFromWatchlist"), "success");
+    }
   };
 
   return (

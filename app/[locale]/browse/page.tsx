@@ -3,8 +3,10 @@ import { getTranslations } from "next-intl/server";
 import { Container, Typography, Grid, Box } from "@mui/material";
 import { routing } from "@/i18n/routing";
 import { discoverTitles, searchMulti, getMovieGenres, getTvGenres } from "@/lib/tmdb";
+import { getWatchlist } from "@/app/actions/watchlist";
 import TitleCard from "@/components/TitleCard";
 import BrowseFilters from "@/components/BrowseFilters";
+import SignInSuccessToast from "@/components/SignInSuccessToast";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -48,10 +50,14 @@ export default async function BrowsePage({ params, searchParams }: Props) {
     console.error("TMDB fetch error:", e);
   }
 
-  const [movieGenres, tvGenres] = await Promise.all([
+  const [movieGenres, tvGenres, watchlist] = await Promise.all([
     getMovieGenres(),
     getTvGenres(),
+    getWatchlist(),
   ]);
+  const watchlistIdByTmdb = new Map(
+    watchlist.map((item) => [`${item.tmdbId}-${item.type}`, item.id])
+  );
   const genreOptions = type === "tv" ? tvGenres : movieGenres;
   const allGenres = [...movieGenres];
   const seen = new Set(movieGenres.map((g) => g.id));
@@ -64,6 +70,7 @@ export default async function BrowsePage({ params, searchParams }: Props) {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
+      <SignInSuccessToast />
       <Typography variant="h4" gutterBottom>
         Browse
       </Typography>
@@ -86,7 +93,12 @@ export default async function BrowsePage({ params, searchParams }: Props) {
         ) : (
           results.map((title) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`${title.type}-${title.id}`}>
-              <TitleCard title={title} />
+              <TitleCard
+                title={title}
+                watchlistItemId={
+                  watchlistIdByTmdb.get(`${title.id}-${title.type}`) ?? null
+                }
+              />
             </Grid>
           ))
         )}

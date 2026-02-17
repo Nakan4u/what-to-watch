@@ -5,10 +5,17 @@ import { useTranslations } from "next-intl";
 import { useSession, signOut } from "next-auth/react";
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useNotification } from "@/components/NotificationContext";
 
 export default function AppHeader() {
   const t = useTranslations("nav");
+  const { showNotification } = useNotification();
   const { data: session, status } = useSession();
+
+  const handleSignOut = () => {
+    showNotification(t("signOutSuccess"), "success");
+    signOut();
+  };
 
   return (
     <AppBar position="static">
@@ -28,7 +35,7 @@ export default function AppHeader() {
           {status === "loading" ? null : session ? (
             <>
               <Typography variant="body2">{session.user?.name ?? session.user?.email}</Typography>
-              <Button color="inherit" onClick={() => signOut()}>
+              <Button color="inherit" onClick={handleSignOut}>
                 {t("signOut")}
               </Button>
             </>

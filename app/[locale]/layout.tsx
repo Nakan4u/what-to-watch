@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import AppHeader from "@/components/AppHeader";
 import AuthProvider from "@/components/AuthProvider";
+import { NotificationProvider } from "@/components/NotificationContext";
 
 type Props = {
   children: React.ReactNode;
@@ -29,10 +30,12 @@ export default async function LocaleLayout({ children, params }: Props) {
     <AppRouterCacheProvider>
       <NextIntlClientProvider messages={messages}>
         <ThemeRegistry>
-          <AuthProvider>
-            <AppHeader />
-            <main>{children}</main>
-          </AuthProvider>
+          <NotificationProvider>
+            <AuthProvider>
+              <AppHeader />
+              <main>{children}</main>
+            </AuthProvider>
+          </NotificationProvider>
         </ThemeRegistry>
       </NextIntlClientProvider>
     </AppRouterCacheProvider>

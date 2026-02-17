@@ -7,6 +7,7 @@
   "nav": {
     "signIn": "Zaloguj się",
     "signOut": "Wyloguj się",
+    "signOutSuccess": "Wylogowano pomyślnie",
     "myWatchlist": "Moja lista",
     "browse": "Przeglądaj"
   },
@@ -15,7 +16,9 @@
     "password": "Hasło",
     "signIn": "Zaloguj się",
     "register": "Zarejestruj się",
-    "signInWithGoogle": "Zaloguj się przez Google"
+    "signInWithGoogle": "Zaloguj się przez Google",
+    "signInSuccess": "Zalogowano pomyślnie",
+    "registerSuccess": "Konto utworzone. Jesteś zalogowany."
   },
   "browse": {
     "search": "Szukaj",
@@ -29,6 +32,10 @@
   },
   "watchlist": {
     "addToWatchlist": "Dodaj do listy",
+    "signInToAddToWatchlist": "Zaloguj się, aby dodać do listy",
+    "removeFromWatchlist": "Usuń z listy",
+    "addedToWatchlist": "Dodano do listy",
+    "removedFromWatchlist": "Usunięto z listy",
     "markWatched": "Obejrzane",
     "comment": "Komentarz",
     "remove": "Usuń",

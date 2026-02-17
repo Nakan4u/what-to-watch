@@ -8,9 +8,11 @@ import AddToWatchlistButton from "./AddToWatchlistButton";
 
 interface TitleCardProps {
   title: TmdbTitle;
+  /** When set, the title is in the watchlist (for "Remove from watchlist" button) */
+  watchlistItemId?: string | null;
 }
 
-export default function TitleCard({ title }: TitleCardProps) {
+export default function TitleCard({ title, watchlistItemId }: TitleCardProps) {
   const href = title.type === "movie" ? `/movie/${title.id}` : `/tv/${title.id}`;
   const imgUrl = posterUrl(title.poster_path);
 
@@ -53,7 +55,7 @@ export default function TitleCard({ title }: TitleCardProps) {
         </CardContent>
       </Link>
       <CardActions>
-        <AddToWatchlistButton title={title} />
+        <AddToWatchlistButton title={title} watchlistItemId={watchlistItemId} />
       </CardActions>
     </Card>
   );

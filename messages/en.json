@@ -7,6 +7,7 @@
   "nav": {
     "signIn": "Sign in",
     "signOut": "Sign out",
+    "signOutSuccess": "Signed out successfully",
     "myWatchlist": "My watchlist",
     "browse": "Browse"
   },
@@ -15,7 +16,9 @@
     "password": "Password",
     "signIn": "Sign in",
     "register": "Register",
-    "signInWithGoogle": "Sign in with Google"
+    "signInWithGoogle": "Sign in with Google",
+    "signInSuccess": "Signed in successfully",
+    "registerSuccess": "Account created. You're signed in."
   },
   "browse": {
     "search": "Search",
@@ -29,6 +32,10 @@
   },
   "watchlist": {
     "addToWatchlist": "Add to watchlist",
+    "signInToAddToWatchlist": "Sign in to add to watchlist",
+    "removeFromWatchlist": "Remove from watchlist",
+    "addedToWatchlist": "Added to watchlist",
+    "removedFromWatchlist": "Removed from watchlist",
     "markWatched": "Mark watched",
     "comment": "Comment",
     "remove": "Remove",
