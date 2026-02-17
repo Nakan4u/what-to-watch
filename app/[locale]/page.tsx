@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Box, Container, Typography, Grid } from "@mui/material";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { getPopularMovies, getPopularTvShows, getNowPlayingMovies, getMovieGenres, getTvGenres } from "@/lib/tmdb";
+import { getPopularMovies, getPopularTvShows, getNowPlayingMovies, getMovieGenres, getTvGenres, localeToTmdbLanguage } from "@/lib/tmdb";
 import TitleCard from "@/components/TitleCard";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -17,15 +17,16 @@ export function generateStaticParams() {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const lang = localeToTmdbLanguage(locale);
   const t = await getTranslations("common");
   const tHome = await getTranslations("home");
 
   const [nowPlaying, popularMovies, popularTvShows, movieGenres, tvGenres] = await Promise.all([
-    getNowPlayingMovies(10),
-    getPopularMovies(10),
-    getPopularTvShows(10),
-    getMovieGenres(),
-    getTvGenres(),
+    getNowPlayingMovies(10, lang),
+    getPopularMovies(10, lang),
+    getPopularTvShows(10, lang),
+    getMovieGenres(lang),
+    getTvGenres(lang),
   ]);
   const movieGenreMap = new Map(movieGenres.map((g) => [g.id, g.name]));
   const tvGenreMap = new Map(tvGenres.map((g) => [g.id, g.name]));

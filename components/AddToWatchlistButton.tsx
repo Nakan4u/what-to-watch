@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@mui/material";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 import { useTranslations } from "next-intl";
 import { addToWatchlist, removeFromWatchlist } from "@/app/actions/watchlist";
 import { useNotification } from "@/components/NotificationContext";
@@ -69,6 +71,13 @@ export default function AddToWatchlistButton({
       color={inWatchlist ? "error" : "primary"}
       onClick={inWatchlist ? handleRemove : handleAdd}
       disabled={loading}
+      startIcon={
+        inWatchlist ? (
+          <BookmarkRemoveIcon />
+        ) : (
+          <BookmarkAddIcon />
+        )
+      }
     >
       {inWatchlist ? t("removeFromWatchlist") : t("addToWatchlist")}
     </Button>

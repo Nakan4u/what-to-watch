@@ -1,5 +1,15 @@
 const TMDB_BASE = "https://api.themoviedb.org/3";
 
+/** Map app locale to TMDB language param (ISO 639-1 + region). Used for titles/overviews. */
+export function localeToTmdbLanguage(locale: string): string {
+  const map: Record<string, string> = {
+    en: "en-US",
+    pl: "pl-PL",
+    uk: "uk-UA",
+  };
+  return map[locale] ?? "en-US";
+}
+
 function getApiKey(): string | null {
   return process.env.TMDB_API_KEY ?? process.env.NEXT_PUBLIC_TMDB_KEY ?? null;
 }
@@ -81,19 +91,20 @@ export interface DiscoverOptions {
   genreId?: number;
   year?: number;
   page?: number;
+  language?: string;
 }
 
 export async function discoverTitles(
   options: DiscoverOptions = {}
 ): Promise<{ results: TmdbTitle[]; total_pages: number }> {
-  const { type = "all", genreId, year, page = 1 } = options;
+  const { type = "all", genreId, year, page = 1, language = "en-US" } = options;
   const key = getApiKey();
   if (!key) return { results: [], total_pages: 0 };
 
   const params = new URLSearchParams({
     api_key: key,
     page: String(page),
-    language: "en-US",
+    language,
   });
   if (genreId != null) params.set("with_genres", String(genreId));
   if (year != null) {
@@ -118,7 +129,7 @@ export async function discoverTitles(
     const tvParams = new URLSearchParams({
       api_key: key,
       page: String(page),
-      language: "en-US",
+      language,
     });
     if (genreId != null) tvParams.set("with_genres", String(genreId));
     if (year != null) {
@@ -144,7 +155,8 @@ export async function discoverTitles(
 
 export async function searchMulti(
   query: string,
-  page = 1
+  page = 1,
+  language = "en-US"
 ): Promise<{ results: TmdbTitle[]; total_pages: number }> {
   if (!query.trim()) return { results: [], total_pages: 0 };
   const key = getApiKey();
@@ -153,7 +165,7 @@ export async function searchMulti(
     api_key: key,
     query: query.trim(),
     page: String(page),
-    language: "en-US",
+    language,
   });
   const url = `${TMDB_BASE}/search/multi?${params}`;
   const res = await fetch(url);
@@ -171,13 +183,18 @@ export function posterUrl(path: string | null, size: "w185" | "w342" | "original
   return `https://image.tmdb.org/t/p/${size}${path}`;
 }
 
+export function backdropUrl(path: string | null, size: "w780" | "w1280" | "original" = "w1280"): string | null {
+  if (!path) return null;
+  return `https://image.tmdb.org/t/p/${size}${path}`;
+}
+
 const fetchOptions: RequestInit = { cache: "no-store" };
 
-export async function getPopularMovies(limit = 10): Promise<TmdbTitle[]> {
+export async function getPopularMovies(limit = 10, language = "en-US"): Promise<TmdbTitle[]> {
   const key = getApiKey();
   if (!key) return [];
   const res = await fetch(
-    `${TMDB_BASE}/movie/popular?api_key=${key}&language=en-US&page=1`,
+    `${TMDB_BASE}/movie/popular?api_key=${key}&language=${encodeURIComponent(language)}&page=1`,
     fetchOptions
   );
   if (!res.ok) return [];
@@ -187,11 +204,11 @@ export async function getPopularMovies(limit = 10): Promise<TmdbTitle[]> {
 }
 
 /** Movies currently in theaters (now playing) */
-export async function getNowPlayingMovies(limit = 10): Promise<TmdbTitle[]> {
+export async function getNowPlayingMovies(limit = 10, language = "en-US"): Promise<TmdbTitle[]> {
   const key = getApiKey();
   if (!key) return [];
   const res = await fetch(
-    `${TMDB_BASE}/movie/now_playing?api_key=${key}&language=en-US&page=1`,
+    `${TMDB_BASE}/movie/now_playing?api_key=${key}&language=${encodeURIComponent(language)}&page=1`,
     fetchOptions
   );
   if (!res.ok) return [];
@@ -200,11 +217,11 @@ export async function getNowPlayingMovies(limit = 10): Promise<TmdbTitle[]> {
   return list.slice(0, limit).map((m) => toTitle(m, "movie"));
 }
 
-export async function getPopularTvShows(limit = 10): Promise<TmdbTitle[]> {
+export async function getPopularTvShows(limit = 10, language = "en-US"): Promise<TmdbTitle[]> {
   const key = getApiKey();
   if (!key) return [];
   const res = await fetch(
-    `${TMDB_BASE}/tv/popular?api_key=${key}&language=en-US&page=1`,
+    `${TMDB_BASE}/tv/popular?api_key=${key}&language=${encodeURIComponent(language)}&page=1`,
     fetchOptions
   );
   if (!res.ok) return [];
@@ -218,19 +235,19 @@ export interface Genre {
   name: string;
 }
 
-export async function getMovieGenres(): Promise<Genre[]> {
+export async function getMovieGenres(language = "en-US"): Promise<Genre[]> {
   const key = getApiKey();
   if (!key) return [];
-  const res = await fetch(`${TMDB_BASE}/genre/movie/list?api_key=${key}&language=en-US`);
+  const res = await fetch(`${TMDB_BASE}/genre/movie/list?api_key=${key}&language=${encodeURIComponent(language)}`);
   if (!res.ok) return [];
   const data = await res.json();
   return data.genres ?? [];
 }
 
-export async function getTvGenres(): Promise<Genre[]> {
+export async function getTvGenres(language = "en-US"): Promise<Genre[]> {
   const key = getApiKey();
   if (!key) return [];
-  const res = await fetch(`${TMDB_BASE}/genre/tv/list?api_key=${key}&language=en-US`);
+  const res = await fetch(`${TMDB_BASE}/genre/tv/list?api_key=${key}&language=${encodeURIComponent(language)}`);
   if (!res.ok) return [];
   const data = await res.json();
   return data.genres ?? [];
@@ -244,6 +261,18 @@ export interface TmdbMovieDetail {
   release_date: string;
   vote_average: number;
   genres: { id: number; name: string }[];
+  tagline: string | null;
+  runtime: number | null;
+  status: string | null;
+  vote_count: number;
+  backdrop_path: string | null;
+  homepage: string | null;
+  imdb_id: string | null;
+  original_title: string | null;
+  production_countries: { iso_3166_1: string; name: string }[];
+  spoken_languages: { iso_639_1: string; name: string; english_name: string }[];
+  budget: number;
+  revenue: number;
 }
 
 export interface TmdbTvDetail {
@@ -254,12 +283,24 @@ export interface TmdbTvDetail {
   first_air_date: string;
   vote_average: number;
   genres: { id: number; name: string }[];
+  tagline: string | null;
+  status: string | null;
+  vote_count: number;
+  backdrop_path: string | null;
+  homepage: string | null;
+  original_name: string | null;
+  number_of_seasons: number;
+  number_of_episodes: number;
+  last_air_date: string | null;
+  type: string | null;
+  production_countries: { iso_3166_1: string; name: string }[];
+  spoken_languages: { iso_639_1: string; name: string; english_name: string }[];
 }
 
-export async function getMovieDetail(id: number): Promise<TmdbMovieDetail | null> {
+export async function getMovieDetail(id: number, language = "en-US"): Promise<TmdbMovieDetail | null> {
   const key = getApiKey();
   if (!key) return null;
-  const res = await fetch(`${TMDB_BASE}/movie/${id}?api_key=${key}&language=en-US`);
+  const res = await fetch(`${TMDB_BASE}/movie/${id}?api_key=${key}&language=${encodeURIComponent(language)}`);
   if (!res.ok) return null;
   const data = await res.json();
   return {
@@ -270,13 +311,25 @@ export async function getMovieDetail(id: number): Promise<TmdbMovieDetail | null
     release_date: data.release_date ?? "",
     vote_average: data.vote_average ?? 0,
     genres: data.genres ?? [],
+    tagline: data.tagline ?? null,
+    runtime: data.runtime ?? null,
+    status: data.status ?? null,
+    vote_count: data.vote_count ?? 0,
+    backdrop_path: data.backdrop_path ?? null,
+    homepage: data.homepage ?? null,
+    imdb_id: data.imdb_id ?? null,
+    original_title: data.original_title ?? null,
+    production_countries: data.production_countries ?? [],
+    spoken_languages: data.spoken_languages ?? [],
+    budget: data.budget ?? 0,
+    revenue: data.revenue ?? 0,
   };
 }
 
-export async function getTvDetail(id: number): Promise<TmdbTvDetail | null> {
+export async function getTvDetail(id: number, language = "en-US"): Promise<TmdbTvDetail | null> {
   const key = getApiKey();
   if (!key) return null;
-  const res = await fetch(`${TMDB_BASE}/tv/${id}?api_key=${key}&language=en-US`);
+  const res = await fetch(`${TMDB_BASE}/tv/${id}?api_key=${key}&language=${encodeURIComponent(language)}`);
   if (!res.ok) return null;
   const data = await res.json();
   return {
@@ -287,6 +340,18 @@ export async function getTvDetail(id: number): Promise<TmdbTvDetail | null> {
     first_air_date: data.first_air_date ?? "",
     vote_average: data.vote_average ?? 0,
     genres: data.genres ?? [],
+    tagline: data.tagline ?? null,
+    status: data.status ?? null,
+    vote_count: data.vote_count ?? 0,
+    backdrop_path: data.backdrop_path ?? null,
+    homepage: data.homepage ?? null,
+    original_name: data.original_name ?? null,
+    number_of_seasons: data.number_of_seasons ?? 0,
+    number_of_episodes: data.number_of_episodes ?? 0,
+    last_air_date: data.last_air_date ?? null,
+    type: data.type ?? null,
+    production_countries: data.production_countries ?? [],
+    spoken_languages: data.spoken_languages ?? [],
   };
 }
 

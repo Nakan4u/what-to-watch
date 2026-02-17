@@ -2,7 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { Container, Typography, Grid, Box } from "@mui/material";
 import { routing } from "@/i18n/routing";
-import { discoverTitles, searchMulti, getMovieGenres, getTvGenres } from "@/lib/tmdb";
+import { discoverTitles, searchMulti, getMovieGenres, getTvGenres, localeToTmdbLanguage } from "@/lib/tmdb";
 import { getWatchlist } from "@/app/actions/watchlist";
 import TitleCard from "@/components/TitleCard";
 import BrowseFilters from "@/components/BrowseFilters";
@@ -27,13 +27,14 @@ export default async function BrowsePage({ params, searchParams }: Props) {
   const genreId = sp.genre ? parseInt(sp.genre, 10) : undefined;
   const year = sp.year ? parseInt(sp.year, 10) : undefined;
   const page = sp.page ? parseInt(sp.page, 10) : 1;
+  const lang = localeToTmdbLanguage(locale);
 
   let results: Awaited<ReturnType<typeof discoverTitles>>["results"] = [];
   let totalPages = 1;
 
   try {
     if (query.trim()) {
-      const searchResult = await searchMulti(query.trim(), page);
+      const searchResult = await searchMulti(query.trim(), page, lang);
       results = searchResult.results;
       totalPages = searchResult.total_pages;
     } else {
@@ -42,6 +43,7 @@ export default async function BrowsePage({ params, searchParams }: Props) {
         genreId: Number.isNaN(genreId!) ? undefined : genreId,
         year: Number.isNaN(year!) ? undefined : year,
         page,
+        language: lang,
       });
       results = discoverResult.results;
       totalPages = discoverResult.total_pages;
@@ -51,8 +53,8 @@ export default async function BrowsePage({ params, searchParams }: Props) {
   }
 
   const [movieGenres, tvGenres, watchlist] = await Promise.all([
-    getMovieGenres(),
-    getTvGenres(),
+    getMovieGenres(lang),
+    getTvGenres(lang),
     getWatchlist(),
   ]);
   const watchlistIdByTmdb = new Map(
