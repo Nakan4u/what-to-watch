@@ -1,9 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Box, Container, Typography, Grid } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { getPopularMovies, getPopularTvShows, getNowPlayingMovies, getMovieGenres, getTvGenres, localeToTmdbLanguage } from "@/lib/tmdb";
-import TitleCard from "@/components/TitleCard";
+import HomeSectionSlider from "@/components/HomeSectionSlider";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -31,6 +31,24 @@ export default async function HomePage({ params }: Props) {
   const movieGenreMap = new Map(movieGenres.map((g) => [g.id, g.name]));
   const tvGenreMap = new Map(tvGenres.map((g) => [g.id, g.name]));
 
+  const toMovieGenres = (ids: number[] | undefined) =>
+    (ids?.map((id) => movieGenreMap.get(id)).filter((n): n is string => n != null)) ?? [];
+  const toTvGenres = (ids: number[] | undefined) =>
+    (ids?.map((id) => tvGenreMap.get(id)).filter((n): n is string => n != null)) ?? [];
+
+  const nowPlayingItems = nowPlaying.map((title) => ({
+    title,
+    genreNames: toMovieGenres(title.genre_ids),
+  }));
+  const popularMoviesItems = popularMovies.map((title) => ({
+    title,
+    genreNames: toMovieGenres(title.genre_ids),
+  }));
+  const popularTvItems = popularTvShows.map((title) => ({
+    title,
+    genreNames: toTvGenres(title.genre_ids),
+  }));
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4, textAlign: "center" }}>
@@ -45,84 +63,23 @@ export default async function HomePage({ params }: Props) {
         </Typography>
       </Box>
 
-      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
-        {tHome("inTheaters")}
-      </Typography>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        {nowPlaying.length === 0 ? (
-          <Grid size={12}>
-            <Typography color="text.secondary" sx={{ py: 2 }}>
-              No movies in theaters right now.
-            </Typography>
-          </Grid>
-        ) : (
-          nowPlaying.map((title) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`now-${title.id}`}>
-              <TitleCard
-                title={title}
-                genreNames={
-                  title.genre_ids
-                    ?.map((id) => movieGenreMap.get(id))
-                    .filter((n): n is string => n != null)
-                }
-              />
-            </Grid>
-          ))
-        )}
-      </Grid>
+      <HomeSectionSlider
+        title={tHome("inTheaters")}
+        items={nowPlayingItems}
+        sectionKey="now"
+      />
 
-      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
-        {tHome("popularMovies")}
-      </Typography>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        {popularMovies.length === 0 ? (
-          <Grid size={12}>
-            <Typography color="text.secondary" sx={{ py: 2 }}>
-              No movies loaded. Check that TMDB_API_KEY is set in .env and valid at{" "}
-              <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer">themoviedb.org</a>. Restart the dev server after changing .env.
-            </Typography>
-          </Grid>
-        ) : (
-          popularMovies.map((title) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`movie-${title.id}`}>
-              <TitleCard
-                title={title}
-                genreNames={
-                  title.genre_ids
-                    ?.map((id) => movieGenreMap.get(id))
-                    .filter((n): n is string => n != null)
-                }
-              />
-            </Grid>
-          ))
-        )}
-      </Grid>
+      <HomeSectionSlider
+        title={tHome("popularMovies")}
+        items={popularMoviesItems}
+        sectionKey="movie"
+      />
 
-      <Typography variant="h5" component="h2" gutterBottom>
-        {tHome("popularTvShows")}
-      </Typography>
-      <Grid container spacing={2}>
-        {popularTvShows.length === 0 ? (
-          <Grid size={12}>
-            <Typography color="text.secondary" sx={{ py: 2 }}>
-              No TV shows loaded. Check TMDB_API_KEY in .env.
-            </Typography>
-          </Grid>
-        ) : (
-          popularTvShows.map((title) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`tv-${title.id}`}>
-              <TitleCard
-                title={title}
-                genreNames={
-                  title.genre_ids
-                    ?.map((id) => tvGenreMap.get(id))
-                    .filter((n): n is string => n != null)
-                }
-              />
-            </Grid>
-          ))
-        )}
-      </Grid>
+      <HomeSectionSlider
+        title={tHome("popularTvShows")}
+        items={popularTvItems}
+        sectionKey="tv"
+      />
     </Container>
   );
 }

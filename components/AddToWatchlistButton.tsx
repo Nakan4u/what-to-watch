@@ -34,7 +34,7 @@ export default function AddToWatchlistButton({
       title.type,
       title.title,
       title.poster_path,
-      pathname
+      pathname,
     );
     setLoading(false);
     if (result?.error) {
@@ -71,13 +71,7 @@ export default function AddToWatchlistButton({
       color={inWatchlist ? "error" : "primary"}
       onClick={inWatchlist ? handleRemove : handleAdd}
       disabled={loading}
-      startIcon={
-        inWatchlist ? (
-          <BookmarkRemoveIcon />
-        ) : (
-          <BookmarkAddIcon />
-        )
-      }
+      startIcon={inWatchlist ? <BookmarkRemoveIcon /> : <BookmarkAddIcon />}
     >
       {inWatchlist ? t("removeFromWatchlist") : t("addToWatchlist")}
     </Button>

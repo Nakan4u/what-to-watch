@@ -1,6 +1,14 @@
 "use client";
 
-import { Card, CardContent, CardMedia, Typography, Chip, CardActions, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  CardActions,
+  Box,
+  Tooltip,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { TmdbTitle } from "@/lib/tmdb";
@@ -15,9 +23,14 @@ interface TitleCardProps {
   genreNames?: string[];
 }
 
-export default function TitleCard({ title, watchlistItemId, genreNames }: TitleCardProps) {
+export default function TitleCard({
+  title,
+  watchlistItemId,
+  genreNames,
+}: TitleCardProps) {
   const t = useTranslations("browse");
-  const href = title.type === "movie" ? `/movie/${title.id}` : `/tv/${title.id}`;
+  const href =
+    title.type === "movie" ? `/movie/${title.id}` : `/tv/${title.id}`;
   const imgUrl = posterUrl(title.poster_path);
   const year = title.release_date ? title.release_date.slice(0, 4) : null;
 
@@ -32,31 +45,74 @@ export default function TitleCard({ title, watchlistItemId, genreNames }: TitleC
       }}
     >
       <Link href={href} style={{ textDecoration: "none", color: "inherit" }}>
-        <CardMedia
-          component="img"
-          height="340"
-          image={imgUrl ?? undefined}
-          alt={title.title}
+        <Box
           sx={{
-            objectFit: "cover",
+            width: "100%",
+            aspectRatio: "2/3",
+            overflow: "hidden",
             bgcolor: "grey.300",
           }}
-        />
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        >
+          <Box
+            component="img"
+            src={imgUrl ?? undefined}
+            alt={title.title}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </Box>
+        <CardContent
+          sx={{
+            flexGrow: 1,
+            minHeight: 182,
+            height: 182,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            gutterBottom
+            noWrap
+          >
             {title.type === "movie" ? t("movie") : t("tv")}
             {year ? ` · ${year}` : ""}
           </Typography>
-          <Typography variant="h6" component="h2" noWrap>
-            {title.title}
-          </Typography>
+          <Tooltip title={title.title} enterDelay={400} placement="top">
+            <Typography
+              variant="h6"
+              component="h2"
+              noWrap
+              sx={{ flexShrink: 0 }}
+            >
+              {title.title}
+            </Typography>
+          </Tooltip>
           {title.vote_average != null && (
             <Typography variant="body2" sx={{ mt: 0.5 }} component="span">
               ★ {title.vote_average.toFixed(1)}
             </Typography>
           )}
           {genreNames && genreNames.length > 0 && (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mt: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "flex-start",
+                alignItems: "flex-start",
+                gap: 0.5,
+                mt: 1,
+                minHeight: 0,
+                flex: 1,
+                overflow: "hidden",
+              }}
+            >
               {genreNames.slice(0, 4).map((name) => (
                 <Chip
                   key={name}
