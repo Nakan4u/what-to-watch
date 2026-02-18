@@ -6,6 +6,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { routing } from "@/i18n/routing";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
 import AuthProvider from "@/components/AuthProvider";
 import { NotificationProvider } from "@/components/NotificationContext";
 
@@ -32,8 +33,17 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ThemeRegistry>
           <NotificationProvider>
             <AuthProvider>
-              <AppHeader />
-              <main>{children}</main>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100vh",
+                }}
+              >
+                <AppHeader />
+                <main style={{ flex: 1 }}>{children}</main>
+                <AppFooter />
+              </div>
             </AuthProvider>
           </NotificationProvider>
         </ThemeRegistry>

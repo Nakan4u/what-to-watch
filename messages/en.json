@@ -106,5 +106,10 @@
     "inTheaters": "In Theaters",
     "popularMovies": "Popular movies",
     "popularTvShows": "Popular TV shows"
+  },
+  "footer": {
+    "copyright": "© {year} {appName}",
+    "dataFrom": "All data from",
+    "tmdbSite": "TMDB"
   }
 }

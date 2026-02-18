@@ -106,5 +106,10 @@
     "inTheaters": "W kinach",
     "popularMovies": "Popularne filmy",
     "popularTvShows": "Popularne seriale"
+  },
+  "footer": {
+    "copyright": "© {year} {appName}",
+    "dataFrom": "Wszystkie dane z",
+    "tmdbSite": "TMDB"
   }
 }

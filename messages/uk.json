@@ -106,5 +106,10 @@
     "inTheaters": "В кінотеатрах",
     "popularMovies": "Популярні фільми",
     "popularTvShows": "Популярні серіали"
+  },
+  "footer": {
+    "copyright": "© {year} {appName}",
+    "dataFrom": "Усі дані з",
+    "tmdbSite": "TMDB"
   }
 }

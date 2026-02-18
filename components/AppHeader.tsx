@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   AppBar,
+  Container,
   Toolbar,
   Typography,
   Button,
@@ -148,8 +149,9 @@ export default function AppHeader() {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="sticky" sx={{ bgcolor: "darkred" }}>
+        <Container maxWidth="lg" sx={{ width: "100%" }}>
+          <Toolbar disableGutters>
           <Typography
             component="h1"
             variant="h6"
@@ -268,7 +270,8 @@ export default function AppHeader() {
             )}
             <LanguageSwitcher />
           </Box>
-        </Toolbar>
+          </Toolbar>
+        </Container>
       </AppBar>
       <Drawer
         variant="temporary"
