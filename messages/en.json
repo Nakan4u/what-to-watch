@@ -49,11 +49,13 @@
   },
   "browse": {
     "search": "Search",
+    "clearSearch": "Clear search",
     "filters": "Filters",
     "movie": "Movie",
     "tv": "TV show",
     "year": "Year",
     "genre": "Genre",
+    "type": "Type",
     "all": "All",
     "noResults": "No results. Try changing filters or search query."
   },

@@ -49,11 +49,13 @@
   },
   "browse": {
     "search": "Szukaj",
+    "clearSearch": "Wyczyść wyszukiwanie",
     "filters": "Filtry",
     "movie": "Film",
     "tv": "Serial",
     "year": "Rok",
     "genre": "Gatunek",
+    "type": "Typ",
     "all": "Wszystkie",
     "noResults": "Brak wyników. Zmień filtry lub zapytanie."
   },
