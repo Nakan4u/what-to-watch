@@ -1,11 +1,11 @@
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
-import { Container, Typography, Grid, Box } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { routing } from "@/i18n/routing";
 import { discoverTitles, searchMulti, getMovieGenres, getTvGenres, localeToTmdbLanguage } from "@/lib/tmdb";
 import { getWatchlist } from "@/app/actions/watchlist";
-import TitleCard from "@/components/TitleCard";
 import BrowseFilters from "@/components/BrowseFilters";
+import BrowseResults from "@/components/BrowseResults";
 import SignInSuccessToast from "@/components/SignInSuccessToast";
 
 type Props = {
@@ -84,33 +84,21 @@ export default async function BrowsePage({ params, searchParams }: Props) {
         initialYear={sp.year ?? ""}
         genreOptions={type === "all" ? allGenres : genreOptions}
       />
-      <Grid container spacing={2}>
-        {results.length === 0 ? (
-          <Grid size={12}>
-            <Box py={4} textAlign="center">
-              <Typography color="text.secondary">
-                {t("noResults")}
-              </Typography>
-            </Box>
-          </Grid>
-        ) : (
-          results.map((title) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`${title.type}-${title.id}`}>
-              <TitleCard
-                title={title}
-                watchlistItemId={
-                  watchlistIdByTmdb.get(`${title.id}-${title.type}`) ?? null
-                }
-                genreNames={
-                  title.genre_ids
-                    ?.map((id) => genreIdToName.get(id))
-                    .filter((n): n is string => n != null)
-                }
-              />
-            </Grid>
-          ))
-        )}
-      </Grid>
+      <BrowseResults
+        key={`${query}-${type}-${sp.genre ?? ""}-${sp.year ?? ""}`}
+        initialResults={results}
+        initialTotalPages={totalPages}
+        params={{
+          query,
+          type,
+          genreId: Number.isNaN(genreId!) ? undefined : genreId,
+          year: Number.isNaN(year!) ? undefined : year,
+          locale,
+        }}
+        genreIdToName={Object.fromEntries(genreIdToName)}
+        watchlistIdByTmdb={Object.fromEntries(watchlistIdByTmdb)}
+        noResultsMessage={t("noResults")}
+      />
     </Container>
   );
 }
