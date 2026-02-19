@@ -188,6 +188,12 @@ export function backdropUrl(path: string | null, size: "w780" | "w1280" | "origi
   return `https://image.tmdb.org/t/p/${size}${path}`;
 }
 
+/** Profile image URL for cast/person (TMDB uses w185 for profile). */
+export function profileImageUrl(path: string | null, size: "w45" | "w185" | "h632" | "original" = "w185"): string | null {
+  if (!path) return null;
+  return `https://image.tmdb.org/t/p/${size}${path}`;
+}
+
 const fetchOptions: RequestInit = { cache: "no-store" };
 
 export async function getPopularMovies(limit = 10, language = "en-US"): Promise<TmdbTitle[]> {
@@ -313,6 +319,46 @@ export async function getSimilarMovies(
   const data = await res.json();
   const list = (data.results ?? []) as TmdbMovieResult[];
   return list.slice(0, limit).map((m) => toTitle(m, "movie"));
+}
+
+export interface TmdbCastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order: number;
+}
+
+/** Movie cast (actors) for detail page. */
+export async function getMovieCast(
+  movieId: number,
+  limit = 20
+): Promise<TmdbCastMember[]> {
+  const key = getApiKey();
+  if (!key) return [];
+  const res = await fetch(
+    `${TMDB_BASE}/movie/${movieId}/credits?api_key=${key}`,
+    fetchOptions
+  );
+  if (!res.ok) return [];
+  const data = await res.json();
+  const list = (data.cast ?? []) as Array<{
+    id: number;
+    name: string;
+    character?: string;
+    profile_path: string | null;
+    order: number;
+  }>;
+  return list
+    .slice(0, limit)
+    .filter((c) => c.name)
+    .map((c) => ({
+      id: c.id,
+      name: c.name,
+      character: c.character ?? "",
+      profile_path: c.profile_path ?? null,
+      order: c.order,
+    }));
 }
 
 export async function getMovieDetail(id: number, language = "en-US"): Promise<TmdbMovieDetail | null> {

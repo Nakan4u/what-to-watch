@@ -72,6 +72,7 @@
   },
   "detail": {
     "similarMovies": "Схожі фільми",
+    "cast": "Акторський склад",
     "moreInfo": "Детальніше",
     "status": "Статус",
     "budget": "Бюджет",
@@ -80,6 +81,7 @@
     "language": "Мова",
     "officialWebsite": "Офіційний сайт",
     "imdb": "IMDb",
+    "tmdb": "TMDB",
     "votes": "голосів",
     "watchOptionsPoweredBy": "Варіанти перегляду від JustWatch",
     "statusReleased": "Випущено",

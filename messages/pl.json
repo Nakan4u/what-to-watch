@@ -72,6 +72,7 @@
   },
   "detail": {
     "similarMovies": "Podobne filmy",
+    "cast": "Obsada",
     "moreInfo": "Więcej informacji",
     "status": "Status",
     "budget": "Budżet",
@@ -80,6 +81,7 @@
     "language": "Język",
     "officialWebsite": "Strona oficjalna",
     "imdb": "IMDb",
+    "tmdb": "TMDB",
     "votes": "głosów",
     "watchOptionsPoweredBy": "Opcje oglądania od JustWatch",
     "statusReleased": "Wydany",

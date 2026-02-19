@@ -24,19 +24,20 @@ body {
     url("/cinema-bg.jpg") center / cover no-repeat fixed;
 }
 
-/* Home section Swiper navigation */
-.home-section-swiper .swiper-button-next,
-.home-section-swiper .swiper-button-prev {
-  color: var(--foreground);
+/* Swiper navigation – same look for all sliders (home, cast, etc.) */
+.swiper .swiper-button-next,
+.swiper .swiper-button-prev {
+  color: #e5e5e5 !important;
   opacity: 0.8;
 }
-.home-section-swiper .swiper-button-next:hover,
-.home-section-swiper .swiper-button-prev:hover {
+.swiper .swiper-button-next:hover,
+.swiper .swiper-button-prev:hover {
   opacity: 1;
 }
-.home-section-swiper .swiper-button-next::after,
-.home-section-swiper .swiper-button-prev::after {
+.swiper .swiper-button-next::after,
+.swiper .swiper-button-prev::after {
   font-size: 1.25rem;
+  color: inherit;
 }
 
 /* Fixed slide width so all cards/posters are the same size */

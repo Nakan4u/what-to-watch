@@ -18,6 +18,7 @@ import {
   getMovieDetail,
   getMovieWatchProviders,
   getSimilarMovies,
+  getMovieCast,
   getMovieGenres,
   posterUrl,
   getTmdbWatchPageUrl,
@@ -26,6 +27,7 @@ import {
 import { getWatchlistItemId } from "@/app/actions/watchlist";
 import AddToWatchlistButton from "@/components/AddToWatchlistButton";
 import HomeSectionSlider from "@/components/HomeSectionSlider";
+import CastSlider from "@/components/CastSlider";
 
 type Props = {
   params: Promise<{ locale: string; id: string }>;
@@ -45,13 +47,14 @@ export default async function MovieDetailPage({ params }: Props) {
   if (Number.isNaN(movieId)) notFound();
 
   const lang = localeToTmdbLanguage(locale);
-  const [movie, providers, watchlistItemId, similarMovies, movieGenres] =
+  const [movie, providers, watchlistItemId, similarMovies, movieGenres, cast] =
     await Promise.all([
       getMovieDetail(movieId, lang),
       getMovieWatchProviders(movieId),
       getWatchlistItemId(movieId, "movie"),
       getSimilarMovies(movieId, 10, lang),
       getMovieGenres(lang),
+      getMovieCast(movieId, 20),
     ]);
 
   const movieGenreMap = new Map(movieGenres.map((g) => [g.id, g.name]));
@@ -95,119 +98,113 @@ export default async function MovieDetailPage({ params }: Props) {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-        <Card
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            overflow: "hidden",
-          }}
-        >
-          <CardMedia
-            component="img"
-            sx={{ width: { md: 320 }, minHeight: 400 }}
-            image={posterUrl(movie.poster_path, "w342") ?? undefined}
-            alt={movie.title}
-          />
-          <CardContent sx={{ flex: 1 }}>
-            <Typography variant="h4" gutterBottom>
-              {movie.title}
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          overflow: "hidden",
+        }}
+      >
+        <CardMedia
+          component="img"
+          sx={{ width: { md: 320 }, minHeight: 400 }}
+          image={posterUrl(movie.poster_path, "w342") ?? undefined}
+          alt={movie.title}
+        />
+        <CardContent sx={{ flex: 1 }}>
+          <Typography variant="h4" gutterBottom>
+            {movie.title}
+          </Typography>
+          {movie.original_title && movie.original_title !== movie.title && (
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              {movie.original_title}
             </Typography>
-            {movie.original_title && movie.original_title !== movie.title && (
-              <Typography
-                variant="subtitle2"
-                color="text.secondary"
-                gutterBottom
-              >
-                {movie.original_title}
-              </Typography>
+          )}
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ mb: 2 }}
+            flexWrap="wrap"
+            useFlexGap
+          >
+            {releaseYear && <Chip label={releaseYear} size="small" />}
+            <Chip label={`★ ${movie.vote_average.toFixed(1)}`} size="small" />
+            {movie.vote_count > 0 && (
+              <Chip
+                label={`${movie.vote_count.toLocaleString()} ${t("votes")}`}
+                size="small"
+                variant="outlined"
+              />
             )}
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ mb: 2 }}
-              flexWrap="wrap"
-              useFlexGap
+            {movie.runtime != null && movie.runtime > 0 && (
+              <Chip
+                label={`${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+            {movie.genres.map((g) => (
+              <Chip key={g.id} label={g.name} size="small" variant="outlined" />
+            ))}
+          </Stack>
+          {movie.tagline && (
+            <Typography
+              variant="body2"
+              fontStyle="italic"
+              color="text.secondary"
+              paragraph
             >
-              {releaseYear && <Chip label={releaseYear} size="small" />}
-              <Chip label={`★ ${movie.vote_average.toFixed(1)}`} size="small" />
-              {movie.vote_count > 0 && (
-                <Chip
-                  label={`${movie.vote_count.toLocaleString()} ${t("votes")}`}
-                  size="small"
-                  variant="outlined"
-                />
-              )}
-              {movie.runtime != null && movie.runtime > 0 && (
-                <Chip
-                  label={`${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`}
-                  size="small"
-                  variant="outlined"
-                />
-              )}
-              {movie.genres.map((g) => (
-                <Chip
-                  key={g.id}
-                  label={g.name}
-                  size="small"
-                  variant="outlined"
-                />
-              ))}
-            </Stack>
-            {movie.tagline && (
-              <Typography
-                variant="body2"
-                fontStyle="italic"
-                color="text.secondary"
-                paragraph
-              >
-                {movie.tagline}
-              </Typography>
-            )}
-            <Typography variant="body1" paragraph>
-              {movie.overview}
+              {movie.tagline}
             </Typography>
+          )}
+          <Typography variant="body1" paragraph>
+            {movie.overview}
+          </Typography>
 
-            <Box sx={{ mt: 2 }}>
-              <Typography
-                variant="subtitle2"
-                color="text.secondary"
-                gutterBottom
-              >
-                {t("moreInfo")}
-              </Typography>
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              {t("moreInfo")}
+            </Typography>
+            <Stack
+              spacing={0.5}
+              sx={{ fontSize: "0.875rem", color: "text.secondary" }}
+            >
+              {movie.status && (
+                <Typography variant="body2" color="text.secondary">
+                  {t("status")}: {statusLabel}
+                </Typography>
+              )}
+              {movie.budget > 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  {t("budget")}: {formatCurrency(movie.budget)}
+                </Typography>
+              )}
+              {movie.revenue > 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  {t("revenue")}: {formatCurrency(movie.revenue)}
+                </Typography>
+              )}
+              {movie.production_countries.length > 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  {t("country")}:{" "}
+                  {movie.production_countries.map((c) => c.name).join(", ")}
+                </Typography>
+              )}
+              {movie.spoken_languages.length > 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  {t("language")}:{" "}
+                  {movie.spoken_languages
+                    .map((l) => l.english_name || l.name)
+                    .join(", ")}
+                </Typography>
+              )}
               <Stack
-                spacing={0.5}
-                sx={{ fontSize: "0.875rem", color: "text.secondary" }}
+                direction="row"
+                flexWrap="wrap"
+                useFlexGap
+                gap={1}
+                sx={{ mt: 0.5 }}
               >
-                {movie.status && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("status")}: {statusLabel}
-                  </Typography>
-                )}
-                {movie.budget > 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("budget")}: {formatCurrency(movie.budget)}
-                  </Typography>
-                )}
-                {movie.revenue > 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("revenue")}: {formatCurrency(movie.revenue)}
-                  </Typography>
-                )}
-                {movie.production_countries.length > 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("country")}:{" "}
-                    {movie.production_countries.map((c) => c.name).join(", ")}
-                  </Typography>
-                )}
-                {movie.spoken_languages.length > 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t("language")}:{" "}
-                    {movie.spoken_languages
-                      .map((l) => l.english_name || l.name)
-                      .join(", ")}
-                  </Typography>
-                )}
                 {movie.homepage && (
                   <Button
                     size="small"
@@ -217,7 +214,7 @@ export default async function MovieDetailPage({ params }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     startIcon={<PublicIcon />}
-                    sx={{ alignSelf: "flex-start", textTransform: "none" }}
+                    sx={{ textTransform: "none" }}
                   >
                     {t("officialWebsite")}
                   </Button>
@@ -231,78 +228,91 @@ export default async function MovieDetailPage({ params }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     startIcon={<MovieCreationIcon />}
-                    sx={{ alignSelf: "flex-start", textTransform: "none" }}
+                    sx={{ textTransform: "none" }}
                   >
                     {t("imdb")}
                   </Button>
                 )}
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="secondary"
+                  href={`https://www.themoviedb.org/movie/${movie.id}-${slugify(movie.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<OpenInNewIcon />}
+                  sx={{ textTransform: "none" }}
+                >
+                  {t("tmdb")}
+                </Button>
               </Stack>
-            </Box>
+            </Stack>
+          </Box>
 
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                {tWatch("title")}
-              </Typography>
-              {providers && (
-                <>
-                  {providers.flatrate?.length ? (
-                    <Typography variant="body2" color="text.secondary">
-                      {tWatch("stream")}:{" "}
-                      {providers.flatrate
-                        .map((p) => p.provider_name)
-                        .join(", ")}
-                    </Typography>
-                  ) : null}
-                  {providers.rent?.length ? (
-                    <Typography variant="body2" color="text.secondary">
-                      {tWatch("rent")}:{" "}
-                      {providers.rent.map((p) => p.provider_name).join(", ")}
-                    </Typography>
-                  ) : null}
-                  {providers.buy?.length ? (
-                    <Typography variant="body2" color="text.secondary">
-                      {tWatch("buy")}:{" "}
-                      {providers.buy.map((p) => p.provider_name).join(", ")}
-                    </Typography>
-                  ) : null}
-                </>
-              )}
-              <Button
-                variant="contained"
-                href={watchUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                startIcon={<OpenInNewIcon />}
-                sx={{ mt: 2 }}
-              >
-                {tWatch("seeWhereToWatch")}
-              </Button>
-              <Typography
-                variant="caption"
-                display="block"
-                color="text.secondary"
-                sx={{ mt: 1 }}
-              >
-                {t("watchOptionsPoweredBy")}
-              </Typography>
-            </Box>
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {tWatch("title")}
+            </Typography>
+            {providers && (
+              <>
+                {providers.flatrate?.length ? (
+                  <Typography variant="body2" color="text.secondary">
+                    {tWatch("stream")}:{" "}
+                    {providers.flatrate.map((p) => p.provider_name).join(", ")}
+                  </Typography>
+                ) : null}
+                {providers.rent?.length ? (
+                  <Typography variant="body2" color="text.secondary">
+                    {tWatch("rent")}:{" "}
+                    {providers.rent.map((p) => p.provider_name).join(", ")}
+                  </Typography>
+                ) : null}
+                {providers.buy?.length ? (
+                  <Typography variant="body2" color="text.secondary">
+                    {tWatch("buy")}:{" "}
+                    {providers.buy.map((p) => p.provider_name).join(", ")}
+                  </Typography>
+                ) : null}
+              </>
+            )}
+            <Button
+              variant="contained"
+              href={watchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<OpenInNewIcon />}
+              sx={{ mt: 2 }}
+            >
+              {tWatch("seeWhereToWatch")}
+            </Button>
+            <Typography
+              variant="caption"
+              display="block"
+              color="text.secondary"
+              sx={{ mt: 1 }}
+            >
+              {t("watchOptionsPoweredBy")}
+            </Typography>
+          </Box>
 
-            <Box sx={{ mt: 3 }}>
-              <AddToWatchlistButton
-                title={{
-                  id: movie.id,
-                  title: movie.title,
-                  type: "movie",
-                  poster_path: movie.poster_path,
-                  release_date: movie.release_date,
-                  overview: movie.overview,
-                  vote_average: movie.vote_average,
-                }}
-                watchlistItemId={watchlistItemId}
-              />
-            </Box>
+          <Box sx={{ mt: 3 }}>
+            <AddToWatchlistButton
+              title={{
+                id: movie.id,
+                title: movie.title,
+                type: "movie",
+                poster_path: movie.poster_path,
+                release_date: movie.release_date,
+                overview: movie.overview,
+                vote_average: movie.vote_average,
+              }}
+              watchlistItemId={watchlistItemId}
+            />
+          </Box>
         </CardContent>
       </Card>
+
+      {cast.length > 0 && <CastSlider title={t("cast")} cast={cast} />}
 
       {similarItems.length > 0 && (
         <HomeSectionSlider

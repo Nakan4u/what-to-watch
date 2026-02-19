@@ -72,6 +72,7 @@
   },
   "detail": {
     "similarMovies": "Similar movies",
+    "cast": "Cast",
     "moreInfo": "More info",
     "status": "Status",
     "budget": "Budget",
@@ -80,6 +81,7 @@
     "language": "Language",
     "officialWebsite": "Official website",
     "imdb": "IMDb",
+    "tmdb": "TMDB",
     "votes": "votes",
     "watchOptionsPoweredBy": "Watch options powered by JustWatch",
     "statusReleased": "Released",
