@@ -127,7 +127,7 @@
   },
   "footer": {
     "copyright": "© {year} {appName}",
-    "dataFrom": "Wszystkie dane z",
+    "dataFrom": "Dane dostarczone przez",
     "tmdbSite": "TMDB"
   }
 }

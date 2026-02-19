@@ -200,7 +200,7 @@ export default function AppHeader() {
                 <IconButton
                   onClick={handleMenuOpen}
                   size="small"
-                  sx={{ ml: 1 }}
+                  sx={{ ml: 1, borderRadius: 1 }}
                   aria-controls={open ? "user-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}

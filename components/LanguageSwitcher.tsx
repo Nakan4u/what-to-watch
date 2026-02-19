@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
+import { setStoredLocale } from "./LocaleStorageSync";
 
 const locales = [
   { value: "en", label: "English", flag: "🇬🇧" },
@@ -29,6 +30,7 @@ export default function LanguageSwitcher({ light }: LanguageSwitcherProps) {
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const newLocale = event.target.value as "en" | "pl" | "uk";
+    setStoredLocale(newLocale);
     router.replace(pathname, { locale: newLocale });
   };
 

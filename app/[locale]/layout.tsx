@@ -9,6 +9,7 @@ import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import AuthProvider from "@/components/AuthProvider";
 import { NotificationProvider } from "@/components/NotificationContext";
+import LocaleStorageSync from "@/components/LocaleStorageSync";
 
 type Props = {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ThemeRegistry>
           <NotificationProvider>
             <AuthProvider>
+              <LocaleStorageSync />
               <div
                 style={{
                   display: "flex",

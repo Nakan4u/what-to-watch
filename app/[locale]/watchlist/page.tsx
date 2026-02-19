@@ -41,53 +41,61 @@ export default async function WatchlistPage({ params }: Props) {
         {t("title")}
       </Typography>
       {items.length === 0 ? (
-        <Typography color="text.secondary">
-          {t("empty")}
-        </Typography>
+        <Typography color="text.secondary">{t("empty")}</Typography>
       ) : (
         <Grid container spacing={2}>
-          {items.map((item: Awaited<ReturnType<typeof getWatchlist>>[number]) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
-              <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                <Link
-                  href={
-                    item.type === "movie"
-                      ? `/movie/${item.tmdbId}`
-                      : `/tv/${item.tmdbId}`
-                  }
-                  style={{ textDecoration: "none" }}
+          {items.map(
+            (item: Awaited<ReturnType<typeof getWatchlist>>[number]) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
                 >
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={posterUrl(item.posterPath) ?? undefined}
-                    alt={item.title ?? ""}
-                    sx={{ objectFit: "cover", bgcolor: "grey.300" }}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      {item.type === "movie" ? tBrowse("movie") : tBrowse("tv")}
-                    </Typography>
-                    <Typography variant="h6" noWrap>
-                      {item.title ?? `#${item.tmdbId}`}
-                    </Typography>
-                    {item.watched && (
-                      <Typography variant="body2" color="primary">
-                        Watched {item.comment ? `· ${item.comment}` : ""}
+                  <Link
+                    href={
+                      item.type === "movie"
+                        ? `/movie/${item.tmdbId}`
+                        : `/tv/${item.tmdbId}`
+                    }
+                    style={{ textDecoration: "none" }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={posterUrl(item.posterPath) ?? undefined}
+                      alt={item.title ?? ""}
+                      sx={{ objectFit: "cover", bgcolor: "grey.300" }}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {item.type === "movie"
+                          ? tBrowse("movie")
+                          : tBrowse("tv")}
                       </Typography>
-                    )}
-                  </CardContent>
-                </Link>
-                <CardActions>
-                  <WatchlistActions
-                    itemId={item.id}
-                    watched={item.watched}
-                    comment={item.comment}
-                  />
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+                      <Typography variant="h6" noWrap>
+                        {item.title ?? `#${item.tmdbId}`}
+                      </Typography>
+                      {item.watched && (
+                        <Typography variant="body2" color="primary">
+                          Watched {item.comment ? `· ${item.comment}` : ""}
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </Link>
+                  <CardActions>
+                    <WatchlistActions
+                      itemId={item.id}
+                      watched={item.watched}
+                      comment={item.comment}
+                    />
+                  </CardActions>
+                </Card>
+              </Grid>
+            ),
+          )}
         </Grid>
       )}
     </Container>

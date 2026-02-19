@@ -17,6 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import { updateProfileName, updatePassword, updateProfileImage, removeProfileImage } from "@/app/actions/profile";
 import { useNotification } from "@/components/NotificationContext";
 
@@ -35,6 +36,7 @@ export default function ProfileForm({
 }: ProfileFormProps) {
   const t = useTranslations("profile");
   const { showNotification } = useNotification();
+  const { update: updateSession } = useSession();
   const [name, setName] = useState(initialName ?? "");
   const [nameError, setNameError] = useState<string | null>(null);
   const [nameLoading, setNameLoading] = useState(false);
@@ -66,6 +68,7 @@ export default function ProfileForm({
       }
       setImageUrl(result.imageUrl ?? null);
       showNotification(t("avatarUpdated"), "success");
+      await updateSession();
     } catch {
       setAvatarError(t("error"));
     }
@@ -85,6 +88,7 @@ export default function ProfileForm({
       }
       setImageUrl(null);
       showNotification(t("avatarRemoved"), "success");
+      await updateSession();
     } catch {
       setAvatarError(t("error"));
     }
@@ -103,6 +107,7 @@ export default function ProfileForm({
         return;
       }
       showNotification(t("nameUpdated"), "success");
+      await updateSession();
     } catch {
       setNameError(t("error"));
     }
