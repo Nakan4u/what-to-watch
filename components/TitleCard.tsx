@@ -125,7 +125,7 @@ export default function TitleCard({
           )}
         </CardContent>
       </Link>
-      <CardActions>
+      <CardActions sx={{ justifyContent: "center" }}>
         <AddToWatchlistButton title={title} watchlistItemId={watchlistItemId} />
       </CardActions>
     </Card>

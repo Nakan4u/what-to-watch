@@ -152,7 +152,11 @@ export default function BrowseFilters({
           minWidth: 0,
         }}
       >
-        <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ mr: 0.5, fontSize: "1.125rem" }}
+        >
           {t("filters")}:
         </Typography>
         <FormControl size="small" sx={{ flex: 1, minWidth: 90 }}>

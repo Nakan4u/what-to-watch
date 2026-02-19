@@ -21,6 +21,7 @@ import {
   getTmdbWatchPageUrl,
   localeToTmdbLanguage,
 } from "@/lib/tmdb";
+import { Link } from "@/i18n/navigation";
 import { getWatchlistItemId } from "@/app/actions/watchlist";
 import AddToWatchlistButton from "@/components/AddToWatchlistButton";
 
@@ -77,6 +78,7 @@ export default async function TvDetailPage({ params }: Props) {
   const statusLabel = show.status
     ? (statusKeyMap[show.status] ? t(statusKeyMap[show.status]) : show.status)
     : "";
+  const mediaType = "tv" as const;
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -140,12 +142,18 @@ export default async function TvDetailPage({ params }: Props) {
                 <Chip label={show.type} size="small" variant="outlined" />
               )}
               {show.genres.map((g) => (
-                <Chip
+                <Link
                   key={g.id}
-                  label={g.name}
-                  size="small"
-                  variant="outlined"
-                />
+                  href={`/browse?genre=${g.id}&type=${mediaType}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Chip
+                    label={g.name}
+                    size="small"
+                    variant="outlined"
+                    clickable
+                  />
+                </Link>
               ))}
             </Stack>
             {show.tagline && (

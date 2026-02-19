@@ -7,7 +7,7 @@ const theme = createTheme({
     mode: "dark",
   },
   typography: {
-    fontFamily: '"Geist", "Helvetica", "Arial", sans-serif',
+    fontFamily: 'var(--font-inter), "Inter", "Helvetica", "Arial", sans-serif',
   },
 });
 

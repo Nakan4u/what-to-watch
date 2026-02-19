@@ -25,6 +25,7 @@ import {
   localeToTmdbLanguage,
 } from "@/lib/tmdb";
 import { getWatchlistItemId } from "@/app/actions/watchlist";
+import { Link } from "@/i18n/navigation";
 import AddToWatchlistButton from "@/components/AddToWatchlistButton";
 import HomeSectionSlider from "@/components/HomeSectionSlider";
 import CastSlider from "@/components/CastSlider";
@@ -69,8 +70,9 @@ export default async function MovieDetailPage({ params }: Props) {
 
   const t = await getTranslations("detail");
   const tWatch = await getTranslations("whereToWatch");
+  const mediaType = "movie" as const;
 
-  const watchUrl = getTmdbWatchPageUrl("movie", movie.id, slugify(movie.title));
+  const watchUrl = getTmdbWatchPageUrl(mediaType, movie.id, slugify(movie.title));
   const releaseYear = movie.release_date
     ? movie.release_date.slice(0, 4)
     : null;
@@ -144,7 +146,18 @@ export default async function MovieDetailPage({ params }: Props) {
               />
             )}
             {movie.genres.map((g) => (
-              <Chip key={g.id} label={g.name} size="small" variant="outlined" />
+              <Link
+                key={g.id}
+                href={`/browse?genre=${g.id}&type=${mediaType}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Chip
+                  label={g.name}
+                  size="small"
+                  variant="outlined"
+                  clickable
+                />
+              </Link>
             ))}
           </Stack>
           {movie.tagline && (
