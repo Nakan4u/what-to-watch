@@ -297,6 +297,24 @@ export interface TmdbTvDetail {
   spoken_languages: { iso_639_1: string; name: string; english_name: string }[];
 }
 
+/** Similar movies for a given movie (e.g. for detail page). */
+export async function getSimilarMovies(
+  movieId: number,
+  limit = 10,
+  language = "en-US"
+): Promise<TmdbTitle[]> {
+  const key = getApiKey();
+  if (!key) return [];
+  const res = await fetch(
+    `${TMDB_BASE}/movie/${movieId}/similar?api_key=${key}&language=${encodeURIComponent(language)}&page=1`,
+    fetchOptions
+  );
+  if (!res.ok) return [];
+  const data = await res.json();
+  const list = (data.results ?? []) as TmdbMovieResult[];
+  return list.slice(0, limit).map((m) => toTitle(m, "movie"));
+}
+
 export async function getMovieDetail(id: number, language = "en-US"): Promise<TmdbMovieDetail | null> {
   const key = getApiKey();
   if (!key) return null;

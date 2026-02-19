@@ -71,6 +71,7 @@
     "editComment": "Edit comment"
   },
   "detail": {
+    "similarMovies": "Similar movies",
     "moreInfo": "More info",
     "status": "Status",
     "budget": "Budget",

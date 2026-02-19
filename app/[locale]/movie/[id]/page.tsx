@@ -17,12 +17,15 @@ import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import {
   getMovieDetail,
   getMovieWatchProviders,
+  getSimilarMovies,
+  getMovieGenres,
   posterUrl,
   getTmdbWatchPageUrl,
   localeToTmdbLanguage,
 } from "@/lib/tmdb";
 import { getWatchlistItemId } from "@/app/actions/watchlist";
 import AddToWatchlistButton from "@/components/AddToWatchlistButton";
+import HomeSectionSlider from "@/components/HomeSectionSlider";
 
 type Props = {
   params: Promise<{ locale: string; id: string }>;
@@ -42,11 +45,22 @@ export default async function MovieDetailPage({ params }: Props) {
   if (Number.isNaN(movieId)) notFound();
 
   const lang = localeToTmdbLanguage(locale);
-  const [movie, providers, watchlistItemId] = await Promise.all([
-    getMovieDetail(movieId, lang),
-    getMovieWatchProviders(movieId),
-    getWatchlistItemId(movieId, "movie"),
-  ]);
+  const [movie, providers, watchlistItemId, similarMovies, movieGenres] =
+    await Promise.all([
+      getMovieDetail(movieId, lang),
+      getMovieWatchProviders(movieId),
+      getWatchlistItemId(movieId, "movie"),
+      getSimilarMovies(movieId, 10, lang),
+      getMovieGenres(lang),
+    ]);
+
+  const movieGenreMap = new Map(movieGenres.map((g) => [g.id, g.name]));
+  const toGenreNames = (ids: number[] | undefined) =>
+    (ids?.map((id) => movieGenreMap.get(id)).filter((n): n is string => n != null)) ?? [];
+  const similarItems = similarMovies.map((title) => ({
+    title,
+    genreNames: toGenreNames(title.genre_ids),
+  }));
 
   if (!movie) notFound();
 
@@ -289,6 +303,14 @@ export default async function MovieDetailPage({ params }: Props) {
             </Box>
         </CardContent>
       </Card>
+
+      {similarItems.length > 0 && (
+        <HomeSectionSlider
+          title={t("similarMovies")}
+          items={similarItems}
+          sectionKey="similar"
+        />
+      )}
     </Container>
   );
 }
