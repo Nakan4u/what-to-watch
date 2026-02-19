@@ -361,6 +361,89 @@ export async function getMovieCast(
     }));
 }
 
+export interface TmdbPersonDetail {
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  place_of_birth: string | null;
+  profile_path: string | null;
+  homepage: string | null;
+  imdb_id: string | null;
+  known_for_department: string;
+}
+
+export interface TmdbPersonMovieCredit {
+  id: number;
+  title: string;
+  character: string;
+  poster_path: string | null;
+  release_date: string;
+  vote_average: number;
+}
+
+/** Person (actor) details for person page. */
+export async function getPersonDetail(
+  personId: number,
+  language = "en-US"
+): Promise<TmdbPersonDetail | null> {
+  const key = getApiKey();
+  if (!key) return null;
+  const res = await fetch(
+    `${TMDB_BASE}/person/${personId}?api_key=${key}&language=${encodeURIComponent(language)}`,
+    fetchOptions
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  return {
+    id: data.id,
+    name: data.name,
+    biography: data.biography ?? "",
+    birthday: data.birthday ?? null,
+    deathday: data.deathday ?? null,
+    place_of_birth: data.place_of_birth ?? null,
+    profile_path: data.profile_path ?? null,
+    homepage: data.homepage ?? null,
+    imdb_id: data.imdb_id ?? null,
+    known_for_department: data.known_for_department ?? "Acting",
+  };
+}
+
+/** Person's movie credits (cast) for "Known for" section. */
+export async function getPersonMovieCredits(
+  personId: number,
+  language = "en-US"
+): Promise<TmdbPersonMovieCredit[]> {
+  const key = getApiKey();
+  if (!key) return [];
+  const res = await fetch(
+    `${TMDB_BASE}/person/${personId}/movie_credits?api_key=${key}&language=${encodeURIComponent(language)}`,
+    fetchOptions
+  );
+  if (!res.ok) return [];
+  const data = await res.json();
+  const cast = (data.cast ?? []) as Array<{
+    id: number;
+    title: string;
+    character?: string;
+    poster_path: string | null;
+    release_date?: string;
+    vote_average?: number;
+  }>;
+  return cast
+    .filter((c) => c.title)
+    .slice(0, 20)
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      character: c.character ?? "",
+      poster_path: c.poster_path ?? null,
+      release_date: c.release_date ?? "",
+      vote_average: c.vote_average ?? 0,
+    }));
+}
+
 export async function getMovieDetail(id: number, language = "en-US"): Promise<TmdbMovieDetail | null> {
   const key = getApiKey();
   if (!key) return null;

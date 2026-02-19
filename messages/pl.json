@@ -97,6 +97,14 @@
     "seasons": "sezonów",
     "episodes": "odcinków"
   },
+  "person": {
+    "biography": "Biografia",
+    "knownFor": "Znany z",
+    "birthday": "Data urodzenia",
+    "placeOfBirth": "Miejsce urodzenia",
+    "knownForDepartment": "Zawód",
+    "officialWebsite": "Strona oficjalna"
+  },
   "whereToWatch": {
     "title": "Gdzie obejrzeć",
     "seeWhereToWatch": "Zobacz gdzie obejrzeć",

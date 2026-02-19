@@ -97,6 +97,14 @@
     "seasons": "сезонів",
     "episodes": "епізодів"
   },
+  "person": {
+    "biography": "Біографія",
+    "knownFor": "Відомий за",
+    "birthday": "Дата народження",
+    "placeOfBirth": "Місце народження",
+    "knownForDepartment": "Професія",
+    "officialWebsite": "Офіційний сайт"
+  },
   "whereToWatch": {
     "title": "Де дивитись",
     "seeWhereToWatch": "Де подивитись",
