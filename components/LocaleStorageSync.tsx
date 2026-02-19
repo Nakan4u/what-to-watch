@@ -11,7 +11,8 @@ export function getStoredLocale(): string | null {
   if (typeof window === "undefined") return null;
   try {
     const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
-    return stored && routing.locales.includes(stored) ? stored : null;
+    const locales = routing.locales as readonly string[];
+    return stored && locales.includes(stored) ? stored : null;
   } catch {
     return null;
   }
