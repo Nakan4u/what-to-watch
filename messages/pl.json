@@ -120,6 +120,11 @@
     "popularMovies": "Popularne filmy",
     "popularTvShows": "Popularne seriale"
   },
+  "notFound": {
+    "title": "Strona nie znaleziona",
+    "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+    "backHome": "Wróć na stronę główną"
+  },
   "footer": {
     "copyright": "© {year} {appName}",
     "dataFrom": "Wszystkie dane z",

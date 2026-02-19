@@ -120,6 +120,11 @@
     "popularMovies": "Popular movies",
     "popularTvShows": "Popular TV shows"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or was moved.",
+    "backHome": "Back to home"
+  },
   "footer": {
     "copyright": "© {year} {appName}",
     "dataFrom": "All data from",

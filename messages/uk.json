@@ -120,6 +120,11 @@
     "popularMovies": "Популярні фільми",
     "popularTvShows": "Популярні серіали"
   },
+  "notFound": {
+    "title": "Сторінку не знайдено",
+    "description": "Сторінка, яку ви шукаєте, не існує або була переміщена.",
+    "backHome": "На головну"
+  },
   "footer": {
     "copyright": "© {year} {appName}",
     "dataFrom": "Усі дані з",
