@@ -1,0 +1,13 @@
+---
+description: Next.js server actions best practices
+globs: app/actions/**/*.ts
+alwaysApply: false
+---
+
+# Server Actions
+
+- Start every file with `"use server";`.
+- Import `auth` from `@/auth` and `prisma` from `@/lib/db`. Use `revalidatePath` from `next/cache` when mutating data.
+- **Auth**: At the start of each mutation, `const session = await auth();` and if `!session?.user?.id` return `{ error: "Unauthorized" }`.
+- **Return shape**: On success return `{ ok: true }` or the fetched data; on auth/validation failure return `{ error: string }`. Let the client handle display (e.g. toast).
+- **Revalidation**: After create/update/delete, call `revalidatePath("/[locale]/watchlist")`, `revalidatePath("/[locale]/profile")`, `revalidatePath("/[locale]/browse")` as needed; accept optional `pathToRevalidate` for the current page.

@@ -1,0 +1,12 @@
+---
+description: React and TSX component patterns
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# React Components
+
+- Use **functional components** and default export for page/UI components.
+- **Client vs server**: Add `"use client"` only when using hooks (useState, usePathname, useTranslations, etc.). Server components: no directive, use async and `getTranslations` from `next-intl/server`.
+- **MUI**: Use components from `@mui/material` and icons from `@mui/icons-material`. Prefer MUI for layout and forms; keep styling consistent with theme.
+- **Server actions from client**: Call actions from `@/app/actions/*`; handle `result?.error` (e.g. show toast via `useNotification()`), and use loading state (e.g. `disabled={loading}`) during the request.

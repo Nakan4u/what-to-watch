@@ -1,0 +1,11 @@
+---
+description: Prisma and database usage
+globs: **/*.ts
+alwaysApply: false
+---
+
+# Prisma
+
+- **Single client**: Import `prisma` from `@/lib/db` only. Do not instantiate `new PrismaClient()` elsewhere (lib/db handles adapter and dev singleton).
+- **Queries**: Prefer `findUnique`/`findFirst` with `select` when you need specific fields. Use `updateMany`/`deleteMany` with `userId` in `where` for user-scoped mutations so ownership is enforced.
+- **Ids**: Use existing composite unique keys (e.g. `userId_tmdbId_type`) for upserts and lookups.

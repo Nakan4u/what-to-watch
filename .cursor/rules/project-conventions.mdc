@@ -1,0 +1,12 @@
+---
+description: Core project conventions and structure for what-to-watch
+alwaysApply: true
+---
+
+# Project Conventions
+
+- **Stack**: Next.js 16 (App Router), TypeScript, Prisma, next-intl, MUI (Material UI).
+- **Imports**: Use path alias `@/` for project imports (e.g. `@/lib/db`, `@/app/actions/watchlist`, `@/components/...`).
+- **Structure**: Pages under `app/[locale]/`, server actions in `app/actions/`, shared UI in `components/`, data/API helpers in `lib/`.
+- **Locales**: App is localized; routes are under `[locale]`. Use `routing` from `@/i18n/routing` for locale list and config.
+- **Auth**: Use `auth()` from `@/auth` in server code; protect server actions by checking `session?.user?.id` and return `{ error: "Unauthorized" }` when missing.

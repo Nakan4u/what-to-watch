@@ -1,0 +1,11 @@
+---
+description: Internationalization with next-intl
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# i18n (next-intl)
+
+- **Client components**: Use `useTranslations("namespace")` from `next-intl` (e.g. `useTranslations("watchlist")`, `useTranslations("common")`). Use the returned `t` for all user-facing strings.
+- **Server components / async**: Use `getTranslations("namespace")` from `next-intl/server`. Call `setRequestLocale(locale)` in layout/page when using `generateStaticParams` with locales.
+- **Namespaces**: Align with keys in `messages/*.json` (e.g. `common`, `nav`, `auth`, `watchlist`, `browse`, `profile`, `detail`, `footer`, `home`). Add new keys to all locale files (en, pl, uk) when adding copy.
